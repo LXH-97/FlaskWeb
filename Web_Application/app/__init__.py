@@ -1,4 +1,4 @@
-from flask.ext.login import LoginManager
+from flask_login import LoginManager
 
 def create_app(config_name):
     # ..
