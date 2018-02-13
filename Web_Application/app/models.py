@@ -40,7 +40,7 @@ class User(UserMixin, db.Model):
         return True
 
 
-    """
+
     password_hash = db.Column(db.String(128))
 
     @property
@@ -53,4 +53,4 @@ class User(UserMixin, db.Model):
 
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
-    """
+
