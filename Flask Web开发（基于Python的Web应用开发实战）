@@ -16,4 +16,16 @@ ext ---> _  ?
 由于不是按书上的顺序创建虚拟环境，而是由pycharm IDE直接创建，所以可能有一些配置没有配置好。
 书中可能还有许多这样的地方和问题，全书过完一遍代码还要回头校正
 
+虚拟环境的命令行启动：
+cd /home/lxh/PycharmProject/FlaskWeb/Web_Application/
+source venv/bin/activate
+退出：
+（venv）$:deactivate
+
+
 决定不做修改而是在自己写入所有代码后，以原作者的代码进行实验，即尝试blog等实战项目能否运行
+
+2018/2/13  完成了1-7章内容的输入，接下来就是实战部分
+
+
+
