@@ -1,0 +1,24 @@
+
+# 渲染登陆表单
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Flasky - Login{% endblock %}
+
+{% block page_content %}
+<div class="page_header">
+    <h1>Login</h1>
+</div>
+<div class="col-md-4">
+    {{ wtf.quick_form(form) }}
+</div>
+{% endblock %}
+
+
+# 链接到注册页面
+<p>
+    New user?
+    <a href="{{ url_for('auth.register') }}">
+        Click here to register.
+    </a>
+</p>

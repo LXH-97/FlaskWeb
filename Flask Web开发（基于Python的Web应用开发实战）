@@ -1,4 +1,5 @@
 书名英文：“Flask Web Development:Developing Web Applications with Python”
+书名中文：“Flask Web开发：基于Python的Web应用开发实战”
 
 将会把书中实战，即建立博客部分的代码手动键入
 
@@ -8,7 +9,7 @@
 
 书中存在问题，是翻译者出了错？：
 flask.ext.login
-形如此类，在github上MiguelGrinberg的源代码是
+形如此类，在github上Miguel Grinberg的源代码是
 flask_login
 ext ---> _  ?
 
@@ -27,5 +28,14 @@ source venv/bin/activate
 
 2018/2/13  完成了1-7章内容的输入，接下来就是实战部分
 
+
+2018/2/16
+模板部分一直没有说明的问题(templates):
+Jinjia2不是很懂，还是不被浏览器兼容(稍后自行查阅jinjia2文档？）？自己学过的HTML/CSS/JavaScript和jinjia2不一样的，
+前者都是标签，也就是<ul><li><a>
+而后者，除了前者的标签，还有{% block %}{% endblock %},这到底是什么？浏览器会直接显示模板内容
+
+书过了一般，确实不少收获，阅读容易了，代码能理解了，敲一遍书上的代码果然是学习的一个不错的方法
+希望也能“闭卷”写代码
 
 
