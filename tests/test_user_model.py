@@ -20,3 +20,16 @@ class UserModelTestCase(unittest.TestCase):
         u = User(password='cat')
         u2 = User(password='cat')
         self.assertTrue(u.password_hash != u2.password_hash)
+
+
+    # 角色和权限的单元测试
+    def test_roles(self):
+        Role.insert_roles()
+        u = User(email='john@example.com', password='cat')
+        self.assertTrue(u.can(Permission.WRITE_ARTICLES))
+        self.assertFalse(u.can(Permission.MODERATE_COMMENTS))
+
+    def test_annoymous_user(self):
+        u = AnnoymousUser()
+        self.assertFalse(u.can(Permission.FOLLOW))
+
