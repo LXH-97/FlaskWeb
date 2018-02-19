@@ -4,6 +4,7 @@ from . import login_manager, db
 from flask import current_app
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
+from datetime import datetime       #自行加入的库，后面看情况是否去除
 
 # 加载用户的回调函数
 @login_manager.user_loder
@@ -19,6 +20,14 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(128))
     role_id = db.Column(db.Interger, db.ForeignKey('role.id'))
+
+    # 用户信息字段
+    name = db.Column(db.String(64))
+    location = db.Column(db.String(64))
+    about_me = db.Column(db.Text())
+    member_since = db.Column(db.DateTime(), default=datetime.utcnow)
+    last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
+
 
     #确认用户账户
     confirmed = db.Column(db.Boolean, default=False)
@@ -72,6 +81,12 @@ class User(UserMixin, db.Model):
     def is_administrator(self):
         return self.can(Permission.ADMINISTER)
 
+    # 刷新用户的最后访问时间
+    def ping(self):
+        self.last_seen = datetime.utcnow()
+        db.session.add(self)
+
+
 class AnonymousUser(AnonymousUserMixin):
     def can(self, permissions):
         return False
@@ -112,9 +127,6 @@ class Role(db.Model):
             role.default = role[r][1]
             db.session.add(role)
         db.session.commit()
-
-
-
 
 
 

@@ -4,7 +4,7 @@ from flask_login import login_user, login_required, current_user, logout_user
 from . import auth
 from ..models import User
 from .forms import LoginForm
-from ..email import send_email  # 没有这个包好像？后补?
+#from ..email import send_email  # 没有这个包好像？后补?
 
 
 
@@ -62,14 +62,14 @@ def confirm(token):
     return redirect(url_for('main.index'))
 
 
-# 在before_app_request处理程序中过滤未确认账户
+# 更新已登陆用户的访问时间
 @auth.before_app_request
 def before_request():
-    if current_user.is_authenticated() \
-            and not current_user.confirmed \
-            and request.endpoint[:5] != 'auth':
-            and request.endpoint != 'static':        #变量解析目标不合法?
-        return redirect(url_for('auth.unconfirmed'))
+    if current_user.is_authenticated():
+        current_user.ping()
+        if not current_user.confirmed \
+                and request.endpoint[:5] != 'auth.':
+            return redirect(url_for('auth.unconfirmed'))
 
 @auth.route('/unconfirmed')
 def unconfirmed():
