@@ -37,6 +37,18 @@
 {% endif %}
 
 
+# 资料页面中的图像
+<img class="img-rounded profile-thumbnail" src="{{ user.gravatar(size=256) }}">
+
+# 管理员使用的资料编辑链接
+{% if_current_user.is_administrator() %}
+<a class="btn btn-danger"
+        href="{{ url_for('.edit_profile_admin', id=user.id) }}">
+    Edit Profile [Admin]
+</a>
+{% endif %}
+
+
 
 
 
