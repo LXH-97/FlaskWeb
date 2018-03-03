@@ -18,6 +18,17 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
+
+# 文章模型
+class Post(db.model):
+    __tablename__ = 'posts'
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.Text)
+    timestamp = db.Column(db.DataTime, index=True, default=datetime.utcnow)
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+
+
 # 修改User模型， 支持用户登陆
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
@@ -43,6 +54,8 @@ class User(UserMixin, db.Model):
 
     # 使用缓存的MD5散列值生成Gravatar URL
     avatar_hash = db.Column(db.String(32))
+
+    posts = db.relationship('Post', backref='author', lazy='dynamic')
 
     def generate_confirmation_token(self, expiration=3600):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
@@ -177,3 +190,7 @@ class Permission:
     WRITE_ARTICLES = 0x04
     MODERATE_COMMENTS = 0x08
     ADMINISTER = 0x80
+
+
+
+

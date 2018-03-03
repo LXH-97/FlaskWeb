@@ -6,7 +6,25 @@
 |-FlaskWeb(原书为flasky)
   |-app/
     |-templates/
+    |-static/
+    |-main/
+      |-__init__.py
+      |-__errors.py
+      |-forms.py
+      |-views.py
+    |-__init__.py
+    |-email.py
+    |-models.py
+  |-migrations/
+  |-tests/
+    |-__init__.py
+    |-test*.py
+  |-venv/
+  |-requirement.txt
+  |-config.py
+  |-manage.py
 
+键入目录只是为了对书的内容更加直观，事实上本人的目录从顶级目录就已经偏移
 
 
 将会把书中实战，即建立博客部分的代码手动键入
