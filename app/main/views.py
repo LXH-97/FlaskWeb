@@ -17,6 +17,15 @@ def index():
         return redirect(url_for('.index()'))
     return render_template('index.html', form=form, posts=posts)
 
+    # 分页显示博客文章列表
+    page = request.args.get('page', 1, type=int)
+    pagination = Post.query.order_by(Post.timestamp.desc()).paginate(
+        page, per_page=current_app.config['FLASKY_POST_PER_PAGE'],
+        error_out=False)
+    posts = pagination.items
+    return render_template('index.html', form=form, posts=posts,
+                           pagination=pagination)
+
 
 # 获取博客文章的资料页面的路由
 @main.route('/user/<username>>')
