@@ -15,6 +15,7 @@ Hello,
 
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
+{% import "_macro.html" as macros %}
 
 {% block title %}Flasky{% endblock %}
 
@@ -56,6 +57,12 @@ Hello,
 </ul>
 
 
+# 在博客列表文章列表下面添加分页导航
+{% include '_posts.html' %}
+<div class="pagination">
+    {{ macros.pagination_widget(pagination, '.index) }}
+</div>
+{% endif %}
 
 
 

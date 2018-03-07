@@ -80,3 +80,6 @@ from datetime import datetime
 我想作者可能真是漏了什么，数据库方面老是出错，app文件夹下也没有一个create_app，还有db
 而且github上的作者源代码在顶级文件夹有个flasky.py，没有一个hello.py
 所以？只能用作者的源码来使？
+
+2018/3/6
+11.4.1出现create_app()
