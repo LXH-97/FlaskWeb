@@ -88,6 +88,8 @@ class User(UserMixin, db.Model):
             self.avatar_hash = hashlib.md5(
                 self.email.encode('utf-8')).hexgiest()
 
+        # 构建时把用户设为自己的关注者
+        self.follow(self)
 
     def change_email(self, token):
         self.email = new_email
@@ -173,6 +175,14 @@ class User(UserMixin, db.Model):
         return self.followers.filter_by(
             follower_id=user.id).first() is not None
 
+    # 把用户设为自己的关注者
+    @staticmethod
+    def add_self_follows():
+        for user in User.query.all()
+            if not user.is_following(user):
+                user.follow(user)
+                db.session.add(user)
+                db.session.commit()
 
 # 文章模型
 class Post(db.model):
@@ -252,4 +262,11 @@ class Permission:
 
 
 
+# 获取关注用户的文章
+class User(db.Model):
+    #..
+    @property
+    def followed_posts(self):
+        return Post.query.join(Follow, Follow.followed_id == Post.author_id)\
+            .filter(Follow.followed_id == self.id)
 
