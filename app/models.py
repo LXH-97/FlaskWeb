@@ -18,7 +18,6 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-
 # 修改User模型， 支持用户登陆
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
@@ -185,6 +184,8 @@ class User(UserMixin, db.Model):
                 db.session.commit()
 
 # 文章模型
+
+
 class Post(db.model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
@@ -206,7 +207,6 @@ class Post(db.model):
                      author=u)
             db.session.add(p)
             db.session.commit()
-
 
 
 class AnonymousUser(AnonymousUserMixin):
@@ -251,7 +251,6 @@ class Role(db.Model):
         db.session.commit()
 
 
-
 # 权限常量
 class Permission:
     FOLLOW = 0x01
@@ -261,7 +260,6 @@ class Permission:
     ADMINISTER = 0x80
 
 
-
 # 获取关注用户的文章
 class User(db.Model):
     #..
@@ -269,4 +267,30 @@ class User(db.Model):
     def followed_posts(self):
         return Post.query.join(Follow, Follow.followed_id == Post.author_id)\
             .filter(Follow.followed_id == self.id)
+
+
+# Comment模型
+class Comment(db.Model):
+    __tablename__ = 'comments'
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.Text)
+    body_html = db.Column(db.Text)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    disabled = db.Column(db.Boolean)
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    post_id = db.Column(db.Integer, db.ForeignKey('post_id'))
+
+    @staticmethod
+    def on_changed_body(target, value, oldvalue, initiator):
+        allowed_tags = ['a', 'abbr', 'acronym', 'b', 'code', 'em', 'i',
+                        'strong']
+        target.body_html = bleach.linkify(bleach.clean(
+            markdown(value, output_format='html'),
+            tags=allowed_tags, strip=True))
+
+db.event.listen(Comment.body, 'set', Comment.on_changed_body)
+
+
+
+
 
