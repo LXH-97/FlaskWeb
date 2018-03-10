@@ -1,0 +1,52 @@
+# 文章的固定链接
+<ul class="posts">
+    {% for psot in posts %}
+    <li class="psot">
+        ...
+        <div class="psot=content">
+            ...
+            <div class="post-footer">
+                <a href="{{ url_for(.post', id=post.id) }}">
+                    <span class="label label-default">Permalink</span>
+                </a>
+            </div>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+
+
+# 编辑博客文章的链接
+<ul class="posts">
+    {% for post in posts %}
+    <li class="post">
+        ...
+        <div class="post-content">
+            ...
+            <div class="post-footer">
+                ...
+                {% if current_user == post.author %}
+                <a href="{{ url_for{'.edit', id=post.id) }}">
+                    <span class="label label-primary">Edit</span>
+                </a>
+                {% elif current_user.is_administrator() %}
+                <a href="{{ url_for('.edit', id=post.id) }}">
+                    <span class="label label-danger">Edit [Admin]</span>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+
+
+# 链接到博客文章的评论
+<a href="{{ url_for('.post', id=post.id) }}#comments">
+    <span class="label label-primary">
+        {{ post.comments.count() }} Comments
+    </span>
+</a>
+
+
+
