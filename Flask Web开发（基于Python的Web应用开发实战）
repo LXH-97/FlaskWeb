@@ -5,6 +5,14 @@
 
 |-FlaskWeb(原书为flasky)
   |-app/
+    |-api_1_0
+      |-__init__.py
+      |-users.py
+      |-posts.py
+      |-comments.py
+      |-authentication.py
+      |-errors.py
+      |-decorates.py
     |-templates/
     |-static/
     |-main/

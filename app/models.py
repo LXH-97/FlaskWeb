@@ -12,6 +12,8 @@ from datetime import datetime       #自行加入的库，后面看情况是否�
 
 import hashlib
 
+from app.exceptions import ValidationError
+
 # 加载用户的回调函数
 @login_manager.user_loder
 def load_user(user_id):
@@ -208,6 +210,29 @@ class Post(db.model):
             db.session.add(p)
             db.session.commit()
 
+    # 把文章转换成JSON格式的序列化字典
+    def to_json(self):
+        json_post = {
+            'url': url_for('api.get_post', id=self.id, _external=True),
+            'body': self.body,
+            'timestamp': self.timestamp,
+            'author': url_for('api.get_user', id=self.author_id,
+                              _external=True),
+            'comments': url_for('api.get_post_comments', id=self.id,
+                                _external=True)
+            'comment_count': self.comments.count()
+            }
+        return json_post
+
+    # 从JSON格式数据创建一篇博客文章
+    @staticmethod
+    def from_json(json_post):
+        body = json_post.get('body')
+        if body is None or body == '':
+            raise ValidationError('post does not have a body')
+        return Post(body=body)
+
+
 
 class AnonymousUser(AnonymousUserMixin):
     def can(self, permissions):
@@ -268,6 +293,20 @@ class User(db.Model):
         return Post.query.join(Follow, Follow.followed_id == Post.author_id)\
             .filter(Follow.followed_id == self.id)
 
+    # 支持基于令牌的认证
+    def generate_auth_token(self, expiration):
+        s = Serializer(current_app.config['SECRET_KEY'],
+                       expires_in=expiration)
+        return s.dumps({'id': self.id})
+
+    @staticmethod
+    def verify_auth_token(token):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+        except:
+            return None
+        return User.query.get(data['id'])
 
 # Comment模型
 class Comment(db.Model):
