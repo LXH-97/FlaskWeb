@@ -185,9 +185,8 @@ class User(UserMixin, db.Model):
                 db.session.add(user)
                 db.session.commit()
 
+
 # 文章模型
-
-
 class Post(db.model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
@@ -231,7 +230,6 @@ class Post(db.model):
         if body is None or body == '':
             raise ValidationError('post does not have a body')
         return Post(body=body)
-
 
 
 class AnonymousUser(AnonymousUserMixin):

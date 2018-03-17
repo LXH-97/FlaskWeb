@@ -208,6 +208,17 @@ def moderate_disable(id):
                             page=request.args.get('page', 1, type=int)))
 
 
+# 关闭路由器的路由
+@main.route('/shutdown')
+def server_shutdown():
+    if not current_user_app.testing:
+        abort(404)
+    shutdown = request.environ.get('werkzeug.server.shutdown')
+    if not shutdown:
+        abort(500)
+    shutdown()
+    return 'Shutting down...'
+
 
 
 
