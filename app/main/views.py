@@ -1,6 +1,8 @@
 from datetime import datetime
 from flask import render_template, session, redirect,url_for
 
+from flask_sqlalchemy import get_debug_queries
+
 from . import main
 from .forms import NameForm   #from auth.forms import NameForm（没有NameForm此函数）?
 from .. import db
@@ -220,7 +222,16 @@ def server_shutdown():
     return 'Shutting down...'
 
 
-
+# 报告缓慢的数据库查询
+@main.after_app_request
+def after_quest(response):
+    for query in get_debug_queries():
+        if query.duration >= current_app_config['FLASKY_SLOW_DB_QUERY_TIME']:
+            current_app.logger.warning(
+                'Slow query: %s\nParameters: %s\nDuration: %fs\nnContext: %s\n' %
+                (query.statement, query.parameters, query.duration,
+                 query.context))
+return response
 
 
 
